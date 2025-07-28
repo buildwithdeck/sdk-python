@@ -1,0 +1,9 @@
+# SecurityQuestionAnswerSaveRequest
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `link_token`                                                                                    | *str*                                                                                           | :heavy_check_mark:                                                                              | The link_token, must be provided when calling Link endpoints, for identifying the Link session. |
+| `answer`                                                                                        | *str*                                                                                           | :heavy_check_mark:                                                                              | N/A                                                                                             |

@@ -1,0 +1,1867 @@
+openapi: "3.0.4"
+info:
+    title: "Deck API"
+    description: "# Deck API makes it straightforward for users to connect to any portal securely and quickly.\r\n\r\n### Welcome! Looking for a quick introduction to our API? Check out the \U0001F680[Quickstart guide](https://framework.docs.deck.co/docs/setup).\r\n\r\nStarting on the sandbox server is easy:\r\n\r\n1. Create an account using the [dashboard](https://dashboard.deck.co) to get your client id and sandbox secret\r\n2. Enter your client id and sandbox secret in the Authentication section below\r\n3. Hit the \"Try\" buttons below for each endpoint.\r\n\r\nHappy querying!"
+    contact:
+        name: "Ready to start building? Contact us!"
+        url: "https://deck.co"
+    version: "v1"
+servers:
+    - url: "https://sandbox.deck.co/api/v1"
+      description: "Deck Sandbox API"
+    - url: "https://live.deck.co/api/v1"
+      description: "Deck API"
+paths:
+    "/jobs/submit":
+        post:
+            tags:
+                - "Jobs"
+            summary: "Send your job requests"
+            description: "Provide a job code along with its input parameters to execute it"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            required:
+                                - "job_code"
+                                - "input"
+                            type: "object"
+                            allOf:
+                                - {"$ref": "#/components/schemas/IJobRequest"}
+                            properties:
+                                "job_code":
+                                    type: "string"
+                                    description: "The job type identifier"
+                                    example: "FetchDocuments"
+                                "input":
+                                    type: "object"
+                                    additionalProperties:
+                                        type: "string"
+                                        description: "Dynamic inputs based on your job type"
+                                    description: "Dynamic input object - structure varies by job type"
+                                    example: {"access_token": "access-development-6599f8dd-1a1c-4586-39d1-08ddb97283f7", "key1": "value1", "someProperty": "someValue"}
+                    "text/json":
+                        schema:
+                            required:
+                                - "job_code"
+                                - "input"
+                            type: "object"
+                            allOf:
+                                - {"$ref": "#/components/schemas/IJobRequest"}
+                            properties:
+                                "job_code":
+                                    type: "string"
+                                    description: "The job type identifier"
+                                    example: "FetchDocuments"
+                                "input":
+                                    type: "object"
+                                    additionalProperties:
+                                        type: "string"
+                                        description: "Dynamic inputs based on your job type"
+                                    description: "Dynamic input object - structure varies by job type"
+                                    example: {"access_token": "access-development-6599f8dd-1a1c-4586-39d1-08ddb97283f7", "key1": "value1", "someProperty": "someValue"}
+                    "application/*+json":
+                        schema:
+                            required:
+                                - "job_code"
+                                - "input"
+                            type: "object"
+                            allOf:
+                                - {"$ref": "#/components/schemas/IJobRequest"}
+                            properties:
+                                "job_code":
+                                    type: "string"
+                                    description: "The job type identifier"
+                                    example: "FetchDocuments"
+                                "input":
+                                    type: "object"
+                                    additionalProperties:
+                                        type: "string"
+                                        description: "Dynamic inputs based on your job type"
+                                    description: "Dynamic input object - structure varies by job type"
+                                    example: {"access_token": "access-development-6599f8dd-1a1c-4586-39d1-08ddb97283f7", "key1": "value1", "someProperty": "someValue"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/BadRequestJobResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/BadRequestJobResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/JobResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/JobResponse"}
+                "409":
+                    description: "Conflict"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/AlreadyRunningJobResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/AlreadyRunningJobResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "submit"
+    "/jobs/mfa/answer":
+        post:
+            tags:
+                - "Jobs"
+            summary: "Provide MFA code"
+            description: "Call this endpoint to send your MFA code"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/MfaAnswerRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/MfaAnswerRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/MfaAnswerRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "answerMFA"
+    "/jobs/documents/list":
+        post:
+            tags:
+                - "Jobs"
+            summary: "List documents"
+            description: "Returns a list of documents available for the connection associated with the provided link token"
+            parameters:
+                - name: "job_guid"
+                  in: "query"
+                  schema:
+                    type: "string"
+                    format: "uuid"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/DocumentListResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/DocumentListResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-group: "jobsDocuments"
+            x-speakeasy-name-override: "list"
+    "/jobs/documents/file":
+        post:
+            tags:
+                - "Jobs"
+            summary: "Get raw file"
+            description: "Returns the raw file for the document with the provided document ID"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RawDocumentRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RawDocumentRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RawDocumentRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema:
+                                type: "string"
+                                format: "binary"
+                        "text/json":
+                            schema:
+                                type: "string"
+                                format: "binary"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "getDocumentFile"
+    "/link/token/create":
+        post:
+            tags:
+                - "Link"
+            summary: "Create a Link Token for running a Link session"
+            description: "Returns a Link Token to be used in a Link session, customized with options for controlling which sources to make available."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenCreateRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenCreateRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenCreateRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "createToken"
+    "/link/info":
+        post:
+            tags:
+                - "Link"
+            summary: "Get client information"
+            description: "Returns information about the client currently using Datadeck for connecting data from a utility data source. The client name and logo are displayed on the first screen of the Datadeck Link widget."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkClientInfoResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkClientInfoResponse"}
+            x-speakeasy-name-override: "getInfo"
+    "/link/sources":
+        post:
+            tags:
+                - "Link"
+            summary: "Search sources"
+            description: "Returns a list of data sources based on a few search parameters"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkSourcesRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkSourcesRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkSourcesRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkSourcesResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkSourcesResponse"}
+            x-speakeasy-name-override: "searchSources"
+    "/link/connect":
+        post:
+            tags:
+                - "Link"
+            summary: "Connect with credentials"
+            description: "Sends credential information to a utility data source and attempts to create a connection request asynchronously."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkConnectRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkConnectRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkConnectRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkConnectResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkConnectResponse"}
+            x-speakeasy-group: "links"
+            x-speakeasy-name-override: "connect"
+    "/link/connection/status":
+        post:
+            tags:
+                - "Link"
+            summary: "Get the status of an attempted connection"
+            description: "Returns the connectivity status about a connection"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkConnectionStatusResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkConnectionStatusResponse"}
+            x-speakeasy-group: "links"
+            x-speakeasy-name-override: "getConnectionStatus"
+    "/link/authentication/mfa/get":
+        post:
+            tags:
+                - "Link"
+            summary: "Get the security question"
+            description: "Call this endpoint when receiving the connection status MfaQuestion, to get the text of the MFA security question"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/SecurityQuestionResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/SecurityQuestionResponse"}
+            x-speakeasy-group: "links.authentication"
+            x-speakeasy-name-override: "getMfaQuestion"
+    "/link/authentication/mfa/answer":
+        post:
+            tags:
+                - "Link"
+            summary: "Provide MFA code"
+            description: "Call this endpoint to send your MFA code, when receiving MfaCodeRequired or MfaCodeInvalid status from webhook"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SecurityQuestionAnswerSaveRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SecurityQuestionAnswerSaveRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SecurityQuestionAnswerSaveRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+            x-speakeasy-group: "links.authentication"
+            x-speakeasy-name-override: "answerMfa"
+    "/link/account/select":
+        post:
+            tags:
+                - "Link"
+            summary: "Select accounts"
+            description: "Call this endpoint to select which accounts to consider, when receiving AccountSelectionRequired status from webhook"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkAccountSelectRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkAccountSelectRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkAccountSelectRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+            x-speakeasy-name-override: "selectAccount"
+    "/link/token/get":
+        post:
+            tags:
+                - "Link"
+            summary: "Get information about a previously created link_token"
+            description: "Returns the associated parameters that were used when creating a link_token"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkTokenGetResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkTokenGetResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "getToken"
+    "/link/account/list":
+        post:
+            tags:
+                - "Link"
+            summary: "Return the list of accounts found while creating connection"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/LinkTokenRequestResponse"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/LinkAccountListResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/LinkAccountListResponse"}
+            x-speakeasy-group: "links"
+            x-speakeasy-name-override: "listAccounts"
+    "/connection/public_token/exchange":
+        post:
+            tags:
+                - "Connection"
+            summary: "Exchange public token for an access token"
+            description: "Exchange a Link public_token for an API access_token. Link hands off the public_token client-side via the onSuccess callback once a user has successfully created a connection."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/ConnectionPublicTokenExchangeRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/ConnectionPublicTokenExchangeRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/ConnectionPublicTokenExchangeRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ConnectionPublicTokenExchangeResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ConnectionPublicTokenExchangeResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "exchangePublicToken"
+    "/connection/context":
+        post:
+            tags:
+                - "Connection"
+            summary: "Get connection status details"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ConnectionContextResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ConnectionContextResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "getContext"
+    "/connection/accounts":
+        post:
+            tags:
+                - "Connection"
+            summary: "Get the connection list of account numbers"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/GetConnectionAccountsResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/GetConnectionAccountsResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "getAccounts"
+    "/connection/accounts/select":
+        post:
+            tags:
+                - "Connection"
+            summary: "Update the list of accounts to be considered"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SelectConnectionAccountsRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SelectConnectionAccountsRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/SelectConnectionAccountsRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "selectAccounts"
+    "/connection/access_token/invalidate":
+        post:
+            tags:
+                - "Connection"
+            summary: "Invalidate access_token"
+            description: "Rotate the access_token associated with a connection. The endpoint returns a new access_token and immediately invalidates the previous access_token."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/InvalidateAccessTokenResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/InvalidateAccessTokenResponse"}
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-group: "connections"
+            x-speakeasy-name-override: "invalidateAccessToken"
+    "/connection/auto_refresh/update":
+        post:
+            tags:
+                - "Connection"
+            summary: "Update connection stream config"
+            description: "You can control which individual connections need to be regularly refreshed or not."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AutoRefreshUpdateRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AutoRefreshUpdateRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AutoRefreshUpdateRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "updateAutoRefresh"
+    "/connection/refresh":
+        post:
+            tags:
+                - "Connection"
+            summary: "Request manual refresh"
+            description: "This will initiate a new session for refreshing the data related to a connection."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RefreshConnectionRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RefreshConnectionRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/RefreshConnectionRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "refresh"
+    "/connection/webhook/update":
+        post:
+            tags:
+                - "Connection"
+            summary: "Update the webhook url for a connection"
+            description: "Decide where the webhook event should be sent to for a specific connection."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/WebhookUpdateRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/WebhookUpdateRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/WebhookUpdateRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-group: "connections"
+            x-speakeasy-name-override: "updateWebhook"
+    "/connection/destroy":
+        post:
+            tags:
+                - "Connection"
+            summary: "Delete all data related to a connection, losing access to it."
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "text/json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+                    "application/*+json":
+                        schema:
+                            allOf:
+                                - {"$ref": "#/components/schemas/AccessTokenRequest"}
+            responses:
+                "400":
+                    description: "Bad Request"
+                    content:
+                        "application/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                        "text/json":
+                            schema: {"$ref": "#/components/schemas/ErrorMessageResponse"}
+                "200":
+                    description: "OK"
+                "401":
+                    description: "Unauthorized - Invalid API key"
+            security:
+                - client_id:
+                    - ""
+                  secret:
+                    - ""
+            x-speakeasy-name-override: "destroy"
+components:
+    schemas:
+        "AccessTokenRequest":
+            required:
+                - "access_token"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+            additionalProperties: false
+        "AccountSelectModeEnum":
+            enum:
+                - "All"
+                - "Single"
+                - "Multiple"
+            type: "string"
+        "AlreadyRunningJobResponse":
+            required:
+                - "error_message"
+                - "job_guid"
+                - "job_id"
+                - "message"
+            type: "object"
+            properties:
+                "job_id":
+                    type: "string"
+                    description: "[Obsolete] Legacy identifier of the job. Use JobGuid instead."
+                    format: "uuid"
+                    deprecated: true
+                "job_guid":
+                    type: "string"
+                    description: "Unique identifier of the already running job."
+                    format: "uuid"
+                "message":
+                    type: "string"
+                    description: "[Obsolete] Legacy message describing the conflict. Use ErrorMessage instead."
+                    deprecated: true
+                "error_message":
+                    type: "string"
+                    description: "A human-readable error message indicating the job is already in progress."
+            additionalProperties: false
+        "AutoRefreshUpdateRequest":
+            required:
+                - "access_token"
+                - "auto_refresh"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+                "auto_refresh":
+                    type: "boolean"
+                    description: "Flag to toggle the automatic refresh when new connection's data is found"
+            additionalProperties: false
+        "BadRequestJobResponse":
+            required:
+                - "error_code"
+                - "error_message"
+            type: "object"
+            properties:
+                "error_code":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ErrorCodeEnum"}
+                    description: "A predefined error code indicating the specific reason for the failure."
+                "message":
+                    type: "string"
+                    description: "[Obsolete] Legacy message describing the conflict. Use ErrorMessage instead."
+                    deprecated: true
+                "error_message":
+                    type: "string"
+                    description: " A human-readable error message indicating the job is already in progress."
+            additionalProperties: false
+        "BetaSourceStatusEnum":
+            enum:
+                - "LiveAndBeta"
+                - "OnlyLive"
+                - "OnlyBeta"
+            type: "string"
+        "ConnectionContextResponse":
+            required:
+                - "entities"
+                - "provider"
+            type: "object"
+            properties:
+                "connection_id":
+                    type: "string"
+                    description: "The Deck Connection ID associated with the access token data being requested"
+                    format: "uuid"
+                "provider":
+                    allOf:
+                        - {"$ref": "#/components/schemas/Provider"}
+                    description: "The data source associated to this connectiond"
+                "connection_status":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ConnectivityStatusEnum"}
+                    description: "Represents the current connection health status between the system and the data source, such as Connected or Disconnected."
+                "connection_status_timestamp":
+                    type: "string"
+                    description: "The UTC timestamp of when the connectivity status was last updated."
+                    format: "date-time"
+                "connection_status_reason":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ScrapingStatusEnum"}
+                    description: "Represents the most recent scraping result for this connection, providing additional context to the connectivity status."
+                "num_of_entities":
+                    type: "integer"
+                    description: "Represents the number of accounts."
+                    format: "int32"
+                    readOnly: true
+                "entities":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/Entity"}
+                    description: "A list of entities associated with this connection."
+            additionalProperties: false
+        "ConnectionPublicTokenExchangeRequest":
+            required:
+                - "public_token"
+            type: "object"
+            properties:
+                "public_token":
+                    minLength: 1
+                    type: "string"
+                    description: "Your public_token, obtained from the Link onSuccess callback"
+            additionalProperties: false
+        "ConnectionPublicTokenExchangeResponse":
+            required:
+                - "fields"
+            type: "object"
+            properties:
+                "access_token":
+                    type: "string"
+                    description: "The access token associated with the connection data is being requested for"
+                "connection_id":
+                    type: "string"
+                    description: "The Deck Connection ID for the connection associated with the returned access token"
+                    format: "uuid"
+                "fields":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/LinkConnectRequestField"}
+                    description: "List of non-sensitive values provided from the Link session by the user"
+            additionalProperties: false
+        "ConnectivityStatusEnum":
+            enum:
+                - "New"
+                - "Connecting"
+                - "Connected"
+                - "Disconnected"
+                - "Error"
+            type: "string"
+        "DocumentInfo":
+            required:
+                - "document_id"
+                - "file_type"
+            type: "object"
+            properties:
+                "document_id":
+                    minLength: 1
+                    type: "string"
+                "file_type":
+                    minLength: 1
+                    type: "string"
+                "metadata":
+                    type: "object"
+                    additionalProperties:
+                        type: "string"
+                "file_name":
+                    type: "string"
+                    nullable: true
+                "file_size":
+                    type: "integer"
+                    format: "int64"
+                    nullable: true
+                "fetch_date":
+                    type: "string"
+                    format: "date-time"
+            additionalProperties: false
+        "DocumentListResponse":
+            required:
+                - "documents"
+            type: "object"
+            properties:
+                "documents":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/DocumentInfo"}
+            additionalProperties: false
+        "Entity":
+            required:
+                - "account_number"
+            type: "object"
+            properties:
+                "account_number":
+                    type: "string"
+            additionalProperties: false
+        "ErrorCategoryEnum":
+            enum:
+                - "INVALID_REQUEST"
+                - "INVALID_RESULT"
+                - "INVALID_INPUT"
+                - "DATA_SOURCE_ERROR"
+                - "RATE_LIMIT_EXCEEDED"
+                - "API_ERROR"
+                - "CONNECTION_ERROR"
+                - "RECAPTCHA_ERROR"
+                - "FETCH_BALANCE"
+                - "ADD_PAYMENT_METHOD"
+                - "FETCH_PAYMENT_METHODS"
+                - "PAYMENT"
+            type: "string"
+        "ErrorCodeEnum":
+            enum:
+                - "DATA_SOURCE_NOT_FOUND"
+                - "DATA_SOURCE_NOT_RESPONDING"
+                - "PRODUCT_NOT_READY"
+                - "CONNECTION_NOT_FOUND"
+                - "CONNECTION_FAILED"
+                - "INVALID_CREDENTIALS"
+                - "LIVE_CONNECTIVITY_NOT_ENABLED"
+                - "PRODUCT_NOT_ENABLED"
+                - "NO_ACCOUNTS"
+                - "NO_STATEMENTS"
+                - "CONNECTION_LOCKED"
+                - "BLOCKED_BY_PIN"
+                - "VALIDATION_FAILED"
+                - "INVALID_API_KEYS"
+                - "INVALID_LINK_TOKEN"
+                - "INVALID_PUBLIC_TOKEN"
+                - "INVALID_ACCESS_TOKEN"
+                - "INVALID_ACCOUNT_ID"
+                - "INVALID_STATEMENT_ID"
+                - "CONSENT_REQUIRED"
+                - "INVALID_CURP"
+                - "INVALID_DOCUMENT_UPLOAD"
+                - "INVALID_ARGUMENT"
+                - "NOT_SUPPORTED"
+                - "UNEXPECTED_ERROR"
+                - "PLANNED_MAINTENANCE"
+                - "SECURITY_QUESTION_NOT_FOUND"
+                - "SECURITY_CAPTCHA_NOT_FOUND"
+                - "RATE_LIMIT_EXCEEDED"
+                - "NO_ACTIVE_CONNECTION"
+                - "INVALID_SOURCE"
+                - "ACTIVE_CONNECTION_EXISTS"
+            type: "string"
+        "ErrorMessageResponse":
+            type: "object"
+            properties:
+                "error_category":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ErrorCategoryEnum"}
+                    description: "A broad categorization of the error. Safe for programmatic use."
+                "error_code":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ErrorCodeEnum"}
+                    description: "The particular error code. Safe for programmatic use."
+                "error_message":
+                    type: "string"
+                    description: "A developer-friendly representation of the error code. This may change over time and is not safe for programmatic use."
+                "display_message":
+                    type: "string"
+                    description: "A user-friendly representation of the error code. null if the error is not related to user action. This may change over time and is not safe for programmatic use."
+                    nullable: true
+            additionalProperties: false
+        "FieldTypeEnum":
+            enum:
+                - "Text"
+                - "Password"
+            type: "string"
+        "GetConnectionAccountsRequestAccount":
+            required:
+                - "account_number"
+                - "is_selected"
+            type: "object"
+            properties:
+                "account_number":
+                    type: "string"
+                    nullable: true
+                "is_selected":
+                    type: "boolean"
+            additionalProperties: false
+        "GetConnectionAccountsResponse":
+            type: "object"
+            properties:
+                "accounts":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/GetConnectionAccountsResponseAccount"}
+            additionalProperties: false
+        "GetConnectionAccountsResponseAccount":
+            required:
+                - "account_number"
+                - "is_selected"
+            type: "object"
+            properties:
+                "account_number":
+                    type: "string"
+                "is_selected":
+                    type: "boolean"
+            additionalProperties: false
+        "IJobRequest":
+            required:
+                - "job_code"
+                - "input"
+            type: "object"
+            properties:
+                "job_code":
+                    type: "string"
+                    description: "The job type identifier"
+                    example: "FetchDocuments"
+                "input":
+                    type: "object"
+                    additionalProperties:
+                        type: "string"
+                        description: "Dynamic inputs based on your job type"
+                    description: "Dynamic input object - structure varies by job type"
+                    example: {"access_token": "access-development-6599f8dd-1a1c-4586-39d1-08ddb97283f7", "key1": "value1", "someProperty": "someValue"}
+            additionalProperties: false
+        "InvalidateAccessTokenResponse":
+            type: "object"
+            properties:
+                "new_access_token":
+                    type: "string"
+                    description: "The access token associated with the connection data being requested"
+            additionalProperties: false
+        "JobResponse":
+            required:
+                - "job_code"
+                - "job_guid"
+            type: "object"
+            properties:
+                "job_guid":
+                    type: "string"
+                    description: "The unique identifier of the job."
+                    format: "uuid"
+                "job_code":
+                    type: "string"
+                    description: "The code representing the type of job executed."
+            additionalProperties: false
+        "LanguageEnum":
+            enum:
+                - "EN"
+                - "ES"
+                - "FR"
+                - "DE"
+                - "IT"
+                - "PT"
+                - "NL"
+                - "PL"
+                - "SV"
+                - "DA"
+                - "NO"
+                - "ET"
+                - "LT"
+                - "LV"
+                - "RO"
+            type: "string"
+        "LinkAccountListResponse":
+            type: "object"
+            properties:
+                "accounts":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/LinkAccountListResponseAccountItem"}
+                    description: "List of available accounts"
+            additionalProperties: false
+        "LinkAccountListResponseAccountItem":
+            type: "object"
+            properties:
+                "account_id":
+                    type: "string"
+                    description: "The account identifier"
+                    format: "uuid"
+                "account_number":
+                    type: "string"
+                "account_address":
+                    type: "string"
+                    description: "The account's address if available"
+                    nullable: true
+            additionalProperties: false
+        "LinkAccountSelectRequest":
+            required:
+                - "link_token"
+            type: "object"
+            properties:
+                "link_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The link_token, must be provided when calling Link endpoints, for identifying the Link session."
+                "accounts":
+                    type: "array"
+                    items:
+                        type: "string"
+                        format: "uuid"
+                    description: "List of selected accounts"
+            additionalProperties: false
+        "LinkClientInfoResponse":
+            type: "object"
+            properties:
+                "name":
+                    type: "string"
+                    description: "Client name to display. If the client did not set his name yet, this property will be NULL and a default name should be displayed in that case."
+                    nullable: true
+                "image_url":
+                    type: "string"
+                    description: "Client logo URL to display."
+                "language":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LanguageEnum"}
+                    description: "The language that Link should be displayed in."
+                "update_mode":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkClientInfoResponseUpdateMode"}
+                    description: "Information about the source, if using Link in Update mode."
+                    nullable: true
+                "terms_of_use_url":
+                    type: "string"
+                    description: "Your terms of use to be accepted by the end-user"
+                    nullable: true
+                "privacy_policy_url":
+                    type: "string"
+                    description: "Your privacy policy to be accepted by the end-user"
+                    nullable: true
+                "mode":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkTokenModeEnum"}
+                    description: "Indicates the mode in which the Link widget should run"
+                    nullable: true
+                "account_select_mode":
+                    allOf:
+                        - {"$ref": "#/components/schemas/AccountSelectModeEnum"}
+                    description: "Indicates the mode to select accounts"
+                "allow_document_upload":
+                    type: "boolean"
+                    description: "Indicates if the Link User should be able to upload documents by himself in Link"
+                "show_step_consent":
+                    type: "boolean"
+                    description: "Indicates if link widget should show the consent screen"
+                "show_step_add_source":
+                    type: "boolean"
+                    description: "Indicates if link widget should show the add source screen"
+                "show_step_select_account":
+                    type: "boolean"
+                    description: "Indicates if link widget should show the account selection screen"
+                "show_step_add_account":
+                    type: "boolean"
+                    description: "Indicates if link widget should show the add account screen"
+            additionalProperties: false
+        "LinkClientInfoResponseUpdateMode":
+            required:
+                - "source"
+            type: "object"
+            properties:
+                "source":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkSourcesResponseSource"}
+                    description: "When using Link in Update mode, this contains information about the original data source for which we are updating the connection."
+            additionalProperties: false
+        "LinkConnectRequest":
+            required:
+                - "fields"
+                - "link_token"
+                - "source_id"
+            type: "object"
+            properties:
+                "link_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The link_token, must be provided when calling Link endpoints, for identifying the Link session."
+                "source_id":
+                    type: "string"
+                    description: "Identifier of the data source to connect to."
+                    format: "uuid"
+                "fields":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/LinkConnectRequestField"}
+                    description: "List of values provided for fields specific to the selected source"
+                "terms_of_use_url":
+                    type: "string"
+                    description: "The accepted terms of use by the end-user"
+                    nullable: true
+                "privacy_policy_url":
+                    type: "string"
+                    description: "The accepted privacy policy by the end-user"
+                    nullable: true
+            additionalProperties: false
+        "LinkConnectRequestField":
+            required:
+                - "field_name"
+                - "field_value"
+            type: "object"
+            properties:
+                "field_name":
+                    type: "string"
+                "field_value":
+                    type: "string"
+            additionalProperties: false
+        "LinkConnectResponse":
+            type: "object"
+            properties:
+                "public_token":
+                    type: "string"
+                    description: "This token must be exchanged for an access_token. In Update mode for an existing connection, the public_token is not returned: There is no need to go through the process of exchanging a public_token for an access_token and the connection's existing access_token will not change."
+                    nullable: true
+            additionalProperties: false
+        "LinkConnectionStatusResponse":
+            type: "object"
+            properties:
+                "status":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkConnectionStatusResponseEnum"}
+                    description: "The current status of the connection requested"
+                "additional_information":
+                    type: "string"
+                    description: "Additional information related to the status"
+                    nullable: true
+            additionalProperties: false
+        "LinkConnectionStatusResponseEnum":
+            enum:
+                - "New"
+                - "Connecting"
+                - "Connected"
+                - "InvalidCredentials"
+                - "Error"
+                - "MfaMethodChoice"
+                - "MfaQuestion"
+                - "MfaQuestionInvalidAnswer"
+                - "MfaQuestionNoAnswer"
+                - "Captcha"
+                - "SecurityQuestion"
+                - "AccountSelection"
+            type: "string"
+        "LinkSourcesRequest":
+            required:
+                - "link_token"
+            type: "object"
+            properties:
+                "link_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The link_token, must be provided when calling Link endpoints, for identifying the Link session."
+                "source_id":
+                    type: "string"
+                    description: "The specific source identifier to find. If left to NULL, a list of the 15 most common data sources is returned. If specified, the search argument will be ignored."
+                    format: "uuid"
+                    nullable: true
+                "search":
+                    maxLength: 255
+                    minLength: 3
+                    type: "string"
+                    description: "A search term for filtering the list by data source name. If left to NULL or empty, a list of the 15 most common data sources is returned."
+                    nullable: true
+            additionalProperties: false
+        "LinkSourcesResponse":
+            type: "object"
+            properties:
+                "sources":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/LinkSourcesResponseSource"}
+                    description: "List of data sources found."
+            additionalProperties: false
+        "LinkSourcesResponseSource":
+            type: "object"
+            properties:
+                "source_id":
+                    type: "string"
+                    description: "Unique identifier of the source with Datadeck."
+                    format: "uuid"
+                "name":
+                    type: "string"
+                    description: "Name of the data source."
+                "logo_url":
+                    type: "string"
+                    description: "Url to display the data source logo, when available (can be null)."
+                    nullable: true
+                "country":
+                    maxLength: 2
+                    minLength: 2
+                    type: "string"
+                    description: "Country code of the data source in ISO 3166 format (2 characters)."
+                    nullable: true
+                "website":
+                    type: "string"
+                    description: "Website of the data source, useful for resetting a password."
+                    nullable: true
+                "fields":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/LinkSourcesResponseSourceField"}
+                    description: "The required fields to be displayed to the user for entering his credentials. In Update mode (for changing a password), the Username value of the connection being updated will also be provided, to be displayed in read-only."
+            additionalProperties: false
+        "LinkSourcesResponseSourceField":
+            required:
+                - "field_label"
+                - "field_name"
+                - "field_number"
+            type: "object"
+            properties:
+                "field_number":
+                    type: "integer"
+                    format: "int32"
+                "field_name":
+                    type: "string"
+                "field_label":
+                    type: "string"
+                "field_value":
+                    type: "string"
+                    nullable: true
+                "field_type":
+                    allOf:
+                        - {"$ref": "#/components/schemas/FieldTypeEnum"}
+            additionalProperties: false
+        "LinkTokenCreateRequest":
+            type: "object"
+            properties:
+                "language":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LanguageEnum"}
+                    description: "The language that Link should be displayed in."
+                    nullable: true
+                "countries":
+                    type: "array"
+                    items:
+                        type: "string"
+                    description: "Specify an array of Datadeck-supported country codes using the ISO-3166-1 alpha-2 country code standard. Sources from all listed countries will be shown."
+                    nullable: true
+                "source_ids":
+                    type: "array"
+                    items:
+                        type: "string"
+                        format: "uuid"
+                    description: "You can specify exactly the sources to be shown in Link by providing a list of source ids."
+                    nullable: true
+                "source_types":
+                    type: "array"
+                    items:
+                        type: "string"
+                    description: "You can limit the sources to be shown in Link by specifying which source types to be shown in Link."
+                    nullable: true
+                "beta_source_status":
+                    allOf:
+                        - {"$ref": "#/components/schemas/BetaSourceStatusEnum"}
+                    description: "To control which sources to be shown regarding their beta status"
+                    nullable: true
+                "update":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkTokenCreateRequestUpdate"}
+                    description: "Used for launching Link in update or refresh mode"
+                    nullable: true
+                "webhook_url":
+                    type: "string"
+                    description: "The webhook URL to receive update events."
+                    nullable: true
+                "auto_refresh":
+                    type: "boolean"
+                    description: "If true, the Link session will automatically refresh the data."
+                    nullable: true
+                "parsing_method":
+                    allOf:
+                        - {"$ref": "#/components/schemas/ParsingMethodEnum"}
+                    description: "Choose the type of parsing needed for the connection"
+                    nullable: true
+                "latest_invoice_only":
+                    type: "boolean"
+                    description: "Specifies whether to collect only the latest invoice data or all available invoices"
+                    nullable: true
+            additionalProperties: false
+        "LinkTokenCreateRequestUpdate":
+            required:
+                - "access_token"
+                - "mode"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The `access_token` associated with the existing Connection to update"
+                "mode":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LinkTokenCreateRequestUpdateModeEnum"}
+                    description: "Set which mode you want to use between Update and Refresh.\r\nUpdate mode will ask to enter the password, for updating it.\r\nRefresh mode will re-use existing known credentials and will only let the user interact with the MFA step during sign-in."
+            additionalProperties: false
+        "LinkTokenCreateRequestUpdateModeEnum":
+            enum:
+                - "UpdateCredentials"
+                - "Refresh"
+                - "UpdateAccountSelection"
+            type: "string"
+        "LinkTokenGetResponse":
+            type: "object"
+            properties:
+                "language":
+                    allOf:
+                        - {"$ref": "#/components/schemas/LanguageEnum"}
+                    description: "The language used for the Link session corresponding to the provided Link token"
+                    nullable: true
+                "beta_source_status":
+                    allOf:
+                        - {"$ref": "#/components/schemas/BetaSourceStatusEnum"}
+                    description: "The beta source status filter from which data sources will be displayed during the Link session corresponding to the provided Link token."
+                    nullable: true
+                "countries":
+                    type: "array"
+                    items:
+                        type: "string"
+                    description: "The countries filter from which data sources will be displayed during the Link session corresponding to the provided Link token"
+                    nullable: true
+                "source_types":
+                    type: "array"
+                    items:
+                        type: "string"
+                    description: "The source types filter from which data sources will be displayed during the Link session corresponding to the provided Link token"
+                    nullable: true
+                "source_guids":
+                    type: "array"
+                    items:
+                        type: "string"
+                        format: "uuid"
+                    nullable: true
+            additionalProperties: false
+        "LinkTokenModeEnum":
+            enum:
+                - "Normal"
+                - "UpdateCredentials"
+                - "Refresh"
+                - "UpdateAccountSelection"
+            type: "string"
+        "LinkTokenRequestResponse":
+            required:
+                - "link_token"
+            type: "object"
+            properties:
+                "link_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The link_token, must be provided when calling Link endpoints, for identifying the Link session."
+            additionalProperties: false
+        "MfaAnswerRequest":
+            required:
+                - "answer"
+            type: "object"
+            properties:
+                "job_guid":
+                    type: "string"
+                    format: "uuid"
+                "answer":
+                    type: "string"
+            additionalProperties: false
+        "ParsingMethodEnum":
+            enum:
+                - "PdfOnly"
+                - "Basic"
+                - "FullSustainability"
+                - "None"
+            type: "string"
+        "Provider":
+            type: "object"
+            properties:
+                "id":
+                    type: "string"
+                    description: "Unique identifier of the data provider associated to this connectiond"
+                    format: "uuid"
+                "name":
+                    type: "string"
+                    description: "Name of the data source provider to this connection"
+            additionalProperties: false
+        "RawDocumentRequest":
+            required:
+                - "access_token"
+                - "document_id"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+                "document_id":
+                    minLength: 1
+                    type: "string"
+            additionalProperties: false
+        "RefreshConnectionRequest":
+            required:
+                - "access_token"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+                "account_numbers":
+                    type: "array"
+                    items:
+                        type: "string"
+            additionalProperties: false
+        "ScrapingStatusEnum":
+            enum:
+                - "New"
+                - "Connecting"
+                - "CredentialsSent"
+                - "InvalidCredentials"
+                - "ConnectedCredentials"
+                - "SecurityAnswerRequired"
+                - "SecurityAnswerInvalid"
+                - "SecurityQuestionTimeout"
+                - "MfaMethodChoiceRequired"
+                - "MfaCodeRequired"
+                - "MfaCodeInvalid"
+                - "MfaCodeTimeout"
+                - "MfaActionRequired"
+                - "BlockedByPin"
+                - "AccountSelectionRequired"
+                - "WaitingForJob"
+                - "ExecutingJob"
+                - "CompletedJob"
+                - "RetryLater"
+                - "DataFound"
+                - "ConnectedWaitingOnDataExtraction"
+                - "NoDataFound"
+                - "NoStatement"
+                - "Error"
+            type: "string"
+        "SecurityQuestionAnswerSaveRequest":
+            required:
+                - "answer"
+                - "link_token"
+            type: "object"
+            properties:
+                "link_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The link_token, must be provided when calling Link endpoints, for identifying the Link session."
+                "answer":
+                    minLength: 1
+                    type: "string"
+            additionalProperties: false
+        "SecurityQuestionResponse":
+            required:
+                - "question"
+            type: "object"
+            properties:
+                "question":
+                    minLength: 1
+                    type: "string"
+            additionalProperties: false
+        "SelectConnectionAccountsRequest":
+            required:
+                - "access_token"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+                "accounts":
+                    type: "array"
+                    items: {"$ref": "#/components/schemas/GetConnectionAccountsRequestAccount"}
+            additionalProperties: false
+        "WebhookUpdateRequest":
+            required:
+                - "access_token"
+                - "is_active"
+                - "url"
+            type: "object"
+            properties:
+                "access_token":
+                    minLength: 1
+                    type: "string"
+                    description: "The access token associated with the Item data is being requested for"
+                "url":
+                    minLength: 1
+                    type: "string"
+                    description: "The URL of the webhook"
+                "is_active":
+                    type: "boolean"
+                    description: "The status of the webhook. If true, the webhook is active. If false, the webhook is inactive."
+            additionalProperties: false
+    securitySchemes:
+        "client_id":
+            type: "apiKey"
+            description: "Enter your client id"
+            name: "x-deck-client-id"
+            in: "header"
+        "secret":
+            type: "apiKey"
+            description: "Enter your secret"
+            name: "x-deck-secret"
+            in: "header"
+tags:
+    - name: "Jobs"
+      description: "Endpoints related to jobs."
+    - name: "Link"
+      description: "These endpoints are used by the Link widget. They can also be used for creating your own UX experience and connecting data from utility data sources."
+    - name: "Connection"
+      description: "Manage connections"

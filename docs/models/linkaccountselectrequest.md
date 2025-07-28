@@ -1,0 +1,9 @@
+# LinkAccountSelectRequest
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `link_token`                                                                                    | *str*                                                                                           | :heavy_check_mark:                                                                              | The link_token, must be provided when calling Link endpoints, for identifying the Link session. |
+| `accounts`                                                                                      | List[*str*]                                                                                     | :heavy_minus_sign:                                                                              | List of selected accounts                                                                       |

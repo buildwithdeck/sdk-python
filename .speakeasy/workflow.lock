@@ -1,0 +1,34 @@
+speakeasyVersion: 1.592.1
+sources:
+    -OAS:
+        sourceNamespace: deck-api
+        sourceRevisionDigest: sha256:fd578ef7140611ce6160c508372be5021f50373c390f99d9d6944bce25e6cf7e
+        sourceBlobDigest: sha256:12931539ed327ce44c8a00c8cfbb92043e369a020e53d41f038ffc895c02063b
+        tags:
+            - latest
+targets:
+    deck-sdk:
+        source: -OAS
+        sourceNamespace: deck-api
+        sourceRevisionDigest: sha256:fd578ef7140611ce6160c508372be5021f50373c390f99d9d6944bce25e6cf7e
+        sourceBlobDigest: sha256:12931539ed327ce44c8a00c8cfbb92043e369a020e53d41f038ffc895c02063b
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        -OAS:
+            inputs:
+                - location: registry.speakeasyapi.dev/deck-software-inc/poc/deck-api:main
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/deck-software-inc/poc/-oas
+    targets:
+        deck-sdk:
+            target: python
+            source: -OAS
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/deck-software-inc/poc/-oas-python-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false

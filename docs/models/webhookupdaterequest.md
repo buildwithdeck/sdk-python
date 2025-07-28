@@ -1,0 +1,10 @@
+# WebhookUpdateRequest
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `access_token`                                                                                | *str*                                                                                         | :heavy_check_mark:                                                                            | The access token associated with the Item data is being requested for                         |
+| `url`                                                                                         | *str*                                                                                         | :heavy_check_mark:                                                                            | The URL of the webhook                                                                        |
+| `is_active`                                                                                   | *bool*                                                                                        | :heavy_check_mark:                                                                            | The status of the webhook. If true, the webhook is active. If false, the webhook is inactive. |
