@@ -11,6 +11,9 @@ targets:
     deck-sdk:
         target: python
         source: -OAS
+        publish:
+            pypi:
+                token: $pypi_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/deck-software-inc/poc/-oas-python-code-samples
