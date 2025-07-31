@@ -3,10 +3,10 @@
 import importlib.metadata
 
 __title__: str = "deck-sdk"
-__version__: str = "0.0.1"
+__version__: str = "0.0.2"
 __openapi_doc_version__: str = "v1"
-__gen_version__: str = "2.667.0"
-__user_agent__: str = "speakeasy-sdk/python 0.0.1 2.667.0 v1 deck-sdk"
+__gen_version__: str = "2.668.4"
+__user_agent__: str = "speakeasy-sdk/python 0.0.2 2.668.4 v1 deck-sdk"
 
 try:
     if __package__ is not None:

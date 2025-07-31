@@ -3,10 +3,13 @@ id: 5f9fa36c-5d7f-4ab7-bdc3-4adb06aecfd4
 management:
   docChecksum: f4aab9af85a617cd8714fb8bd6888e89
   docVersion: v1
-  speakeasyVersion: 1.592.1
-  generationVersion: 2.667.0
-  releaseVersion: 0.0.1
-  configChecksum: c067f78d026d489735699cb660ec815e
+  speakeasyVersion: 1.592.2
+  generationVersion: 2.668.4
+  releaseVersion: 0.0.2
+  configChecksum: 9d203d511e20ab639e89a57b9a34ce25
+  repoURL: https://github.com/buildwithdeck/sdk-python.git
+  installationURL: https://github.com/buildwithdeck/sdk-python.git
+  published: true
 features:
   python:
     acceptHeaders: 3.0.0
@@ -109,6 +112,7 @@ generatedFiles:
   - py.typed
   - pylintrc
   - pyproject.toml
+  - scripts/prepare_readme.py
   - scripts/publish.sh
   - src/deck_sdk/__init__.py
   - src/deck_sdk/_hooks/__init__.py
