@@ -1,4 +1,4 @@
-speakeasyVersion: 1.592.1
+speakeasyVersion: 1.592.2
 sources:
     -OAS:
         sourceNamespace: deck-api
@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:12931539ed327ce44c8a00c8cfbb92043e369a020e53d41f038ffc895c02063b
         tags:
             - latest
+            - speakeasy-sdk-regen-1753734709
 targets:
     deck-sdk:
         source: -OAS
@@ -26,6 +27,9 @@ workflow:
         deck-sdk:
             target: python
             source: -OAS
+            publish:
+                pypi:
+                    token: $pypi_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/deck-software-inc/poc/-oas-python-code-samples

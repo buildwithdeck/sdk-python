@@ -33,21 +33,21 @@ Happy querying!
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [deck-sdk](#deck-sdk)
-  * [SDK Installation](#sdk-installation)
-  * [IDE Support](#ide-support)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Authentication](#authentication)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Resource Management](#resource-management)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
+* [deck-sdk](https://github.com/buildwithdeck/sdk-python/blob/master/#deck-sdk)
+  * [SDK Installation](https://github.com/buildwithdeck/sdk-python/blob/master/#sdk-installation)
+  * [IDE Support](https://github.com/buildwithdeck/sdk-python/blob/master/#ide-support)
+  * [SDK Example Usage](https://github.com/buildwithdeck/sdk-python/blob/master/#sdk-example-usage)
+  * [Authentication](https://github.com/buildwithdeck/sdk-python/blob/master/#authentication)
+  * [Available Resources and Operations](https://github.com/buildwithdeck/sdk-python/blob/master/#available-resources-and-operations)
+  * [Retries](https://github.com/buildwithdeck/sdk-python/blob/master/#retries)
+  * [Error Handling](https://github.com/buildwithdeck/sdk-python/blob/master/#error-handling)
+  * [Server Selection](https://github.com/buildwithdeck/sdk-python/blob/master/#server-selection)
+  * [Custom HTTP Client](https://github.com/buildwithdeck/sdk-python/blob/master/#custom-http-client)
+  * [Resource Management](https://github.com/buildwithdeck/sdk-python/blob/master/#resource-management)
+  * [Debugging](https://github.com/buildwithdeck/sdk-python/blob/master/#debugging)
+* [Development](https://github.com/buildwithdeck/sdk-python/blob/master/#development)
+  * [Maturity](https://github.com/buildwithdeck/sdk-python/blob/master/#maturity)
+  * [Contributions](https://github.com/buildwithdeck/sdk-python/blob/master/#contributions)
 
 <!-- End Table of Contents [toc] -->
 
@@ -230,50 +230,50 @@ with DeckSDK(
 <details open>
 <summary>Available methods</summary>
 
-### [connection](docs/sdks/connection/README.md)
+### [connection](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md)
 
-* [exchange_public_token](docs/sdks/connection/README.md#exchange_public_token) - Exchange public token for an access token
-* [get_context](docs/sdks/connection/README.md#get_context) - Get connection status details
-* [get_accounts](docs/sdks/connection/README.md#get_accounts) - Get the connection list of account numbers
-* [select_accounts](docs/sdks/connection/README.md#select_accounts) - Update the list of accounts to be considered
-* [update_auto_refresh](docs/sdks/connection/README.md#update_auto_refresh) - Update connection stream config
-* [refresh](docs/sdks/connection/README.md#refresh) - Request manual refresh
-* [destroy](docs/sdks/connection/README.md#destroy) - Delete all data related to a connection, losing access to it.
+* [exchange_public_token](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#exchange_public_token) - Exchange public token for an access token
+* [get_context](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#get_context) - Get connection status details
+* [get_accounts](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#get_accounts) - Get the connection list of account numbers
+* [select_accounts](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#select_accounts) - Update the list of accounts to be considered
+* [update_auto_refresh](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#update_auto_refresh) - Update connection stream config
+* [refresh](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#refresh) - Request manual refresh
+* [destroy](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connection/README.md#destroy) - Delete all data related to a connection, losing access to it.
 
-### [connections](docs/sdks/connections/README.md)
+### [connections](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connections/README.md)
 
-* [invalidate_access_token](docs/sdks/connections/README.md#invalidate_access_token) - Invalidate access_token
-* [update_webhook](docs/sdks/connections/README.md#update_webhook) - Update the webhook url for a connection
+* [invalidate_access_token](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connections/README.md#invalidate_access_token) - Invalidate access_token
+* [update_webhook](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/connections/README.md#update_webhook) - Update the webhook url for a connection
 
 
-### [jobs](docs/sdks/jobs/README.md)
+### [jobs](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobs/README.md)
 
-* [submit](docs/sdks/jobs/README.md#submit) - Send your job requests
-* [answer_mfa](docs/sdks/jobs/README.md#answer_mfa) - Provide MFA code
-* [get_document_file](docs/sdks/jobs/README.md#get_document_file) - Get raw file
+* [submit](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobs/README.md#submit) - Send your job requests
+* [answer_mfa](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobs/README.md#answer_mfa) - Provide MFA code
+* [get_document_file](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobs/README.md#get_document_file) - Get raw file
 
-### [jobs_documents](docs/sdks/jobsdocuments/README.md)
+### [jobs_documents](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobsdocuments/README.md)
 
-* [list](docs/sdks/jobsdocuments/README.md#list) - List documents
+* [list](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/jobsdocuments/README.md#list) - List documents
 
-### [link](docs/sdks/link/README.md)
+### [link](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md)
 
-* [create_token](docs/sdks/link/README.md#create_token) - Create a Link Token for running a Link session
-* [get_info](docs/sdks/link/README.md#get_info) - Get client information
-* [search_sources](docs/sdks/link/README.md#search_sources) - Search sources
-* [select_account](docs/sdks/link/README.md#select_account) - Select accounts
-* [get_token](docs/sdks/link/README.md#get_token) - Get information about a previously created link_token
+* [create_token](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md#create_token) - Create a Link Token for running a Link session
+* [get_info](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md#get_info) - Get client information
+* [search_sources](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md#search_sources) - Search sources
+* [select_account](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md#select_account) - Select accounts
+* [get_token](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/link/README.md#get_token) - Get information about a previously created link_token
 
-### [links](docs/sdks/links/README.md)
+### [links](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/links/README.md)
 
-* [connect](docs/sdks/links/README.md#connect) - Connect with credentials
-* [get_connection_status](docs/sdks/links/README.md#get_connection_status) - Get the status of an attempted connection
-* [list_accounts](docs/sdks/links/README.md#list_accounts) - Return the list of accounts found while creating connection
+* [connect](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/links/README.md#connect) - Connect with credentials
+* [get_connection_status](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/links/README.md#get_connection_status) - Get the status of an attempted connection
+* [list_accounts](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/links/README.md#list_accounts) - Return the list of accounts found while creating connection
 
-#### [links.authentication](docs/sdks/authentication/README.md)
+#### [links.authentication](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/authentication/README.md)
 
-* [get_mfa_question](docs/sdks/authentication/README.md#get_mfa_question) - Get the security question
-* [answer_mfa](docs/sdks/authentication/README.md#answer_mfa) - Provide MFA code
+* [get_mfa_question](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/authentication/README.md#get_mfa_question) - Get the security question
+* [answer_mfa](https://github.com/buildwithdeck/sdk-python/blob/master/docs/sdks/authentication/README.md#answer_mfa) - Provide MFA code
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -345,7 +345,7 @@ with DeckSDK(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`DeckSDKError`](./src/deck_sdk/errors/decksdkerror.py) is the base class for all HTTP error responses. It has the following properties:
+[`DeckSDKError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/decksdkerror.py) is the base class for all HTTP error responses. It has the following properties:
 
 | Property           | Type             | Description                                                                             |
 | ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
@@ -354,7 +354,7 @@ with DeckSDK(
 | `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
 | `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
 | `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
-| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](https://github.com/buildwithdeck/sdk-python/blob/master/#error-classes). |
 
 ### Example
 ```python
@@ -401,8 +401,8 @@ with DeckSDK(
 
 ### Error Classes
 **Primary errors:**
-* [`DeckSDKError`](./src/deck_sdk/errors/decksdkerror.py): The base class for HTTP error responses.
-  * [`ErrorMessageResponse`](./src/deck_sdk/errors/errormessageresponse.py): Bad Request. Status code `400`. *
+* [`DeckSDKError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/decksdkerror.py): The base class for HTTP error responses.
+  * [`ErrorMessageResponse`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/errormessageresponse.py): Bad Request. Status code `400`. *
 
 <details><summary>Less common errors (7)</summary>
 
@@ -414,14 +414,14 @@ with DeckSDK(
     * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
 
 
-**Inherit from [`DeckSDKError`](./src/deck_sdk/errors/decksdkerror.py)**:
-* [`BadRequestJobResponseError`](./src/deck_sdk/errors/badrequestjobresponseerror.py): Bad Request. Status code `400`. Applicable to 1 of 23 methods.*
-* [`AlreadyRunningJobResponseError`](./src/deck_sdk/errors/alreadyrunningjobresponseerror.py): Conflict. Status code `409`. Applicable to 1 of 23 methods.*
-* [`ResponseValidationError`](./src/deck_sdk/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+**Inherit from [`DeckSDKError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/decksdkerror.py)**:
+* [`BadRequestJobResponseError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/badrequestjobresponseerror.py): Bad Request. Status code `400`. Applicable to 1 of 23 methods.*
+* [`AlreadyRunningJobResponseError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/alreadyrunningjobresponseerror.py): Conflict. Status code `409`. Applicable to 1 of 23 methods.*
+* [`ResponseValidationError`](https://github.com/buildwithdeck/sdk-python/blob/master/./src/deck_sdk/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
 
-\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
+\* Check [the method documentation](https://github.com/buildwithdeck/sdk-python/blob/master/#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
