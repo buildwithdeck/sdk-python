@@ -9,3 +9,13 @@ Based on:
 - [python v0.0.2] .
 ### Releases
 - [PyPI v0.0.2] https://pypi.org/project/deck-sdk/0.0.2 - .
+
+## 2025-08-09 01:52:58
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.600.2 (2.677.3) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [python v0.0.3] .
+### Releases
+- [PyPI v0.0.3] https://pypi.org/project/deck-sdk/0.0.3 - .
